@@ -1,11 +1,11 @@
 {
-  "name": "pic",
+  "name": "telegram-sticker-resize",
   "version": "0.1.0",
   "description": "A telegram sticker resize tool",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/rickychien/pic.git"
+    "url": "git+https://github.com/tannercollin/telegram-sticker-resize.git"
   },
   "readme": "README.md",
   "engines": {

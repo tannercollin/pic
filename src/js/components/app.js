@@ -15,6 +15,7 @@ export default class App extends React.Component {
     super(props);
 
     this.onDrop = this.onDrop.bind(this);
+    this.onClear = this.onClear.bind(this);
     this.onSave = this.onSave.bind(this);
 
     this.state = {
@@ -28,10 +29,17 @@ export default class App extends React.Component {
     });
   }
 
+  onClear() {
+    this.setState({
+      file: {}
+    });
+  }
+
   onSave() {
     if (this.refs.canvas) {
       this.refs.canvas.toBlob(blob => {
-        FileSaver.saveAs(blob, this.state.file.name);
+        let filename = this.state.file.name.replace(/\.[^/.]+$/, ".png");
+        FileSaver.saveAs(blob, filename);
       });
     }
   }
@@ -54,6 +62,7 @@ export default class App extends React.Component {
       upload: {
         display: 'flex',
         alignItems: 'center',
+        textAlign: 'center',
         justifyContent: 'center',
         margin: '0 auto',
         width: '400px',
@@ -61,9 +70,9 @@ export default class App extends React.Component {
         borderStyle: 'dashed',
         borderRadius: '10px',
         borderColor: 'gray',
-        fontFamily: 'Helvetica Neue',
-        fontSize: '25px',
-        fontWeight: '700',
+        fontFamily: 'Roboto',
+        fontSize: '2em',
+        fontWeight: '300',
         color: 'gray'
       },
       toolbar: {
@@ -83,14 +92,16 @@ export default class App extends React.Component {
         imageUrl={this.state.file.preview} />
     ) : (
       <Dropzone onDrop={this.onDrop} style={style.upload}>
-        <div>Drag & drop picture</div>
+        <div><p>Drag & drop picture</p><p>or press here</p></div>
       </Dropzone>
     );
 
     return (
       <div style={style.app}>
         <div style={style.toolbar}>
-          <ToolButton fontAwesome='picture-o' />
+          <ToolButton
+            fontAwesome='picture-o'
+            onClick={this.onClear} />
           <hr style={style.hr} />
           <ToolButton
             fontAwesome='save'

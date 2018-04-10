@@ -14,7 +14,7 @@ export default class Canvas extends React.Component {
   }
 
   componentDidMount() {
-    const size = 256;
+    const size = 512;
     let canvas = this.canvas =
       new fabric.Canvas(React.findDOMNode(this.refs.canvas));
     canvas.setWidth(size);

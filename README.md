@@ -1,16 +1,16 @@
-# Pic
+# Telegram Sticker Resize
 
-## Prerequisites
+Tool for resizing images to match Telegram's sticker requirements.
 
-+ nodejs@0.12
-+ npm@2
-+ gulp@3.9
+Forked from https://github.com/rickychien/pic, fixes size issue.
 
 ## Installation
 
-Install packages / libraries from NPM.
+Install packages / libraries.
 
 ```bash
+$ sudo apt install libcairo2-dev libjpeg-dev libgif-dev
+$ sudo npm install -g gulp node-gyp
 $ npm install
 ```
 
