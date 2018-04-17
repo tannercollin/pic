@@ -1,6 +1,7 @@
 /* react */
 import React from 'react';
 import Dropzone from 'react-dropzone';
+import Spinner from 'react-spinkit';
 
 /* other */
 import FileSaver from 'filesaver.js';
@@ -19,7 +20,8 @@ export default class App extends React.Component {
     this.onSave = this.onSave.bind(this);
 
     this.state = {
-      file: {}
+      file: {},
+	  saving: false
     };
   }
 
@@ -35,14 +37,24 @@ export default class App extends React.Component {
     });
   }
 
-  onSave() {
-    if (this.refs.canvas) {
-      this.refs.canvas.toBlob(blob => {
-        let filename = this.state.file.name.replace(/\.[^/.]+$/, ".png");
-        FileSaver.saveAs(blob, filename);
-      });
-    }
-  }
+	onSave() {
+		let filename = this.state.file.name.replace(/\.[^/.]+$/, ".png");
+		if (this.refs.canvas) {
+			this.setState({saving: true});
+			this.refs.canvas.toBlob(blob => {
+				var instance = new pngcrush();
+
+				instance.exec(blob, stdoutEvent => {
+					console.log(stdoutEvent.data.line);
+				}).then(doneEvent => {
+					var outputFile = new Blob([doneEvent.data.data], { type: 'image/png' });
+
+					this.setState({saving: false});
+					FileSaver.saveAs(outputFile, filename);
+				});
+			});
+		}
+	}
 
   render() {
     let style = {
@@ -80,6 +92,10 @@ export default class App extends React.Component {
         width: '55px',
         height: '100%'
       },
+      spinner: {
+        width: '200px',
+        height: '200px',
+      },
       hr: {
         margin: '0 10%',
         borderColor: '#32323E'
@@ -110,7 +126,9 @@ export default class App extends React.Component {
         <div
           ref='container'
           style={style.container}>
-          {content}
+          {!this.state.saving ? content :
+			  <Spinner style={style.spinner} name="circle" color="white" fadeIn="none" />
+          }
         </div>
       </div>
     );
